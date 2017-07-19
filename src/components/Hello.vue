@@ -4,7 +4,7 @@
         </div>
         <div class="button-wrap">
             <div class="button-content">
-                <button class="In">浮生一日</button>
+                <button class="In" @click='handleClick'>浮生一日</button>
             </div>
         </div>
     </div>
@@ -12,6 +12,11 @@
 
 <script>
 export default {
+    methods: {
+        handleClick() {
+            this.$router.push({name: 'index'});
+        }
+    }
 };
 </script>
 
@@ -51,5 +56,6 @@ export default {
     font-size: 18px;
     outline: 0;
     border: 1px solid #5a5a5a;
+    font-family: '北魏行楷','STKaiti','STHeiti SC';
 }
 </style>
