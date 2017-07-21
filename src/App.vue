@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <transition name="slide">
+        <transition name="slide" mode='out-in'>
             <router-view></router-view>
         </transition>
     </div>
@@ -21,9 +21,11 @@ export default {
     transform: translate3d(0, 0, 0);
 }
 .slide-leave-active {
-    transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+    opacity: 0;
 }
 .slide-enter {
-	transform: translate3d(100%, 0, 0);
+	transform: translate3d(50%, 0, 0);
+  opacity: 0;
 }
 </style>

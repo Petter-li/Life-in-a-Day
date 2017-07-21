@@ -7,6 +7,7 @@ import axios from 'axios';
 import Mint from 'mint-ui';
 import './assets/index.css';
 import 'mint-ui/lib/style.css';
+import 'font-awesome/css/font-awesome.css';
 
 Vue.use(Mint);
 Vue.config.productionTip = false;
