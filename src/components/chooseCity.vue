@@ -11,7 +11,7 @@
                 </mt-cell>
             </mt-search>
         </div>
-        <hotCity :hotcitys='hotcitys'></hotCity>
+        <hotCity @upup='selectCity' :hotcitys='hotcitys'></hotCity>
     </div>
 </template>
 
@@ -89,8 +89,21 @@ export default {
             }
         },
         selectCity (value) {
-            this.value = '';
-            this.isShow = false;
+            this.$http({
+                url: 'v5/weather',
+                method: 'get',
+                baseURL: '/api',
+                params: {
+                    city: value,
+                    key: 'd15dc3e2ceec45279bdaf77c50399a89'
+                },
+                withCredentials: true
+            }).then((response) => {
+                this.value = '';
+                this.isShow = false;
+                sessionStorage.setItem('cityWeather', JSON.stringify(response.data.HeWeather5['0']));
+                this.$router.go(-1);
+            });
         }
     },
     components: {

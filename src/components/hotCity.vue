@@ -2,7 +2,10 @@
     <div class='main'>
         <div class='title'>热门城市</div>
         <div class="hotContent">
-            <div v-for='item in hotcitys' :key='item' class='city'><span>{{item.name}}</span></div>
+            <div v-for='item in hotcitys' :key='item.name' class='city'><a @click='choiceCity(item.name)'>{{item.name}}</a></div>
+        </div>
+        <div class="back">
+            <i class="fa fa-chevron-up" @click='goback()'></i>
         </div>
     </div>
 </template>
@@ -13,6 +16,14 @@ export default {
         hotcitys: {
             type: Array
         }
+    },
+    methods: {
+        goback() {
+            this.$router.go(-1);
+        },
+        choiceCity(name) {
+            this.$emit('upup', name);
+        }
     }
 };
 </script>
@@ -20,6 +31,7 @@ export default {
 <style>
 .main {
     width:100%;
+    position: relative;
 }
 .main .title {
     font-size: 16px;
@@ -33,9 +45,26 @@ export default {
     flex-wrap: wrap;
     justify-content: space-around;
     align-content: space-around;
-    width:100%;
+    width:90%;
+    padding: 0px 5%;
 }
 .city {
     flex-grow: 1;
+    width: 33%;
+    text-align: center;
+    margin: 15px 0px;
+}
+.back {
+    position: absolute;
+    left:0px;
+    bottom: -80px;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+}
+.back i {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
 }
 </style>

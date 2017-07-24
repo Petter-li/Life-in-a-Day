@@ -2,7 +2,7 @@
     <div class='index'>
         <myHeader class='header' title='成都' icon='fa-map-marker'>
 		     <router-link to="/" slot="left">
-		         <mt-button>登录</mt-button>
+		         <mt-button @click.native='loginIn'>登录</mt-button>
 		     </router-link>
 		     <router-link to="/chooseCity" slot="right">
 		     	<mt-button><i class="fa fa-plus"></i></mt-button>
@@ -14,6 +14,12 @@
 <script>
 import myHeader from '@/components/header';
 export default {
+    methods: {
+        loginIn() {
+            let CityInfo = sessionStorage.getItem('cityWeather');
+            console.log(CityInfo);
+        }
+    },
     components: {
         myHeader
     }
