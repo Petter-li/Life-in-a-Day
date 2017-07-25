@@ -1,7 +1,7 @@
 <template>
     <div class='index'>
     	<div class="bg"></div>
-        <myHeader class='header' title='成都' icon='fa-map-marker'>
+        <myHeader class='header' :title='CityInfo.basic.city' icon='fa-map-marker'>
 		     <router-link to="/" slot="left">
 		         <mt-button @click.native='loginIn'>登录</mt-button>
 		     </router-link>
@@ -17,15 +17,15 @@
 		<div class='weather-content'>
 		    <i class="icon-weather"></i>
 		</div>
-		<p class='weater-des'>晴</p>
+		<p class='weater-des'>{{CityInfo.now.cond.txt}}</p>
 		<div class="weather-detail">
 			<div class="detail-left">
-				<p class='du'><span class='centigrade'>31</span>&nbsp;℃</p>
-				<p class='maxmin'><i class="fa fa-long-arrow-down"></i>&nbsp;<span class='min'>21</span>℃&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>&nbsp;<span class='max'>32</span>℃</p>
+				<p class='du'><span class='centigrade'>{{CityInfo.hourly_forecast["0"].tmp}}</span>&nbsp;℃</p>
+				<p class='maxmin'><i class="fa fa-long-arrow-down"></i>&nbsp;<span class='min'>{{CityInfo.daily_forecast["0"].tmp.min}}</span>℃&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>&nbsp;<span class='max'>{{CityInfo.daily_forecast["0"].tmp.max}}</span>℃</p>
 			</div>
 			<div class="detail-right">
-				<p class='pm25'>PM2.5：<span class='pmnumber'>15</span></p>
-				<p class='pmdes'>空气质量：<span class='air'>良</span></p>
+				<p class='pm25'>PM2.5：<span class='pmnumber'>{{CityInfo.aqi.city.pm25}}</span></p>
+				<p class='pmdes'>空气质量：<span class='air'>{{CityInfo.aqi.city.qlty}}</span></p>
 			</div>
 		</div>
     </div>
@@ -36,8 +36,16 @@ import myHeader from '@/components/header';
 export default {
     data() {
         return {
-            CityInfo: {}
+            CityInfo: {},
+            iconName: ''
         };
+    },
+    created() {
+        let cityWeather = sessionStorage.getItem('cityWeather');
+        if (cityWeather) {
+            this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
+            console.log(this.CityInfo);
+        }
     },
     methods: {
         loginIn() {
@@ -103,7 +111,7 @@ export default {
     display: block;
     width: 150px;
     height: 150px;
-    background-image: url('../assets/weatherIcon/sun.png');
+    background-image: url('../assets/weathericon/100.png');
     background-repeat: no-repeat;
     background-position: center center;
     margin: 0 auto;
