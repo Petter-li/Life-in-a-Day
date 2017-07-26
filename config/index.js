@@ -35,6 +35,13 @@ module.exports = {
             pathRewrite: {
                 '^/api': '/'
             }
+        },
+        '/map': {
+            target: 'https://api.map.baidu.com/',
+            changeOrigin: true,
+            pathRewrite: {
+                '^/map': '/'
+            }
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

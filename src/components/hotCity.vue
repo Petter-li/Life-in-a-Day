@@ -31,7 +31,6 @@ export default {
 <style>
 .main {
     width:100%;
-    position: relative;
 }
 .main .title {
     font-size: 16px;
@@ -55,9 +54,7 @@ export default {
     margin: 15px 0px;
 }
 .back {
-    position: absolute;
-    left:0px;
-    bottom: -80px;
+    margin-top: 50px;
     width: 100%;
     text-align: center;
     font-size: 24px;
