@@ -106,10 +106,16 @@ export default {
     created() {
         let cityWeather = sessionStorage.getItem('cityWeather');
         if (cityWeather) {
-            this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
-            this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
-            this.styleObject = { 'background-image': this.iconUrl };
-            this.cityNow = this.CityInfo.basic.city;
+            let CityInfoJson = JSON.parse(sessionStorage.getItem('cityWeather'));
+            if (CityInfoJson.status === 'unknown city') {
+                console.log('未知的城市');
+                MessageBox('提示', '未知的城市');
+            } else {
+                this.CityInfo = CityInfoJson;
+                this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
+                this.styleObject = { 'background-image': this.iconUrl };
+                this.cityNow = this.CityInfo.basic.city;
+            };
         } else {
             this.refresh();
         };
