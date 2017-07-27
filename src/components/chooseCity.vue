@@ -17,6 +17,7 @@
 
 <script>
 import hotCity from '@/components/hotCity';
+import { MessageBox } from 'mint-ui';
 export default {
     data() {
         return {
@@ -101,8 +102,13 @@ export default {
             }).then((response) => {
                 this.value = '';
                 this.isShow = false;
-                sessionStorage.setItem('cityWeather', JSON.stringify(response.data.HeWeather5['0']));
-                this.$router.go(-1);
+                if (JSON.stringify(response.data.HeWeather5['0'].status === 'unknown city')) {
+                    MessageBox('提示', '未知城市，请重新输入');
+                    return false;
+                } else {
+                    sessionStorage.setItem('cityWeather', JSON.stringify(response.data.HeWeather5['0']));
+                    this.$router.go(-1);
+                }
             });
         }
     },
