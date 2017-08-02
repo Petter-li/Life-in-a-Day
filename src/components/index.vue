@@ -1,40 +1,41 @@
 <template>
     <mt-loadmore :top-method="loadTop" class='loadmore' ref="loadmore">
         <div class='index'>
-        	<div class='bg'></div>
             <myHeader class='header' :title='cityNow' icon='fa-map-marker'>
-    		     <router-link to="/login" slot="left">
-    		         <mt-button @click.native='loginIn'>登录</mt-button>
-    		     </router-link>
-    		     <router-link to="/chooseCity" slot="right">
-    		     	<mt-button><i class="fa fa-plus"></i></mt-button>
-    		     </router-link>
-    		</myHeader>
-    		<div class="date">
-    			<h1 class='title'>浮&nbsp;&nbsp;生</h1>
-    			<p class='orderDay'>第&nbsp;<span class='number'>0</span>&nbsp;日</p>
-    			<p class='detailDay' v-if="CityInfo.status === 'ok'"><i class="fa fa-calendar"></i>&nbsp;<span>{{CityInfo.daily_forecast["0"].date}}</span>&nbsp;<span>{{lunarDate.week}}</span>&nbsp;<span>{{lunarDate.date}}</span></p>
-    		</div>
-    		<div class='weather-content' v-if="CityInfo.status === 'ok'">
-    		    <i class="icon-weather" :style='styleObject'></i>
-    		</div>
-    		<p class='weater-des' v-if="CityInfo.status === 'ok'">{{CityInfo.now.cond.txt}}</p>
-    		<div class="weather-detail">
-    			<div class="detail-left">
-    				<p class='du'><span class='centigrade' v-if="CityInfo.status === 'ok'">{{CityInfo.hourly_forecast["0"].tmp}}</span>&nbsp;℃</p>
-    				<p class='maxmin' v-if="CityInfo.status === 'ok'"><i class="fa fa-long-arrow-down"></i>&nbsp;<span class='min'>{{CityInfo.daily_forecast["0"].tmp.min}}</span>℃&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>&nbsp;<span class='max'>{{CityInfo.daily_forecast["0"].tmp.max}}</span>℃</p>
-    			</div>
-    			<div class="detail-right">
-    				<p class='pm25'>PM2.5：<span class='pmnumber' v-if="CityInfo.status === 'ok'">{{CityInfo.aqi.city.pm25}}</span></p>
-    				<p class='pmdes'>空气质量：<span class='air' v-if="CityInfo.status === 'ok'">{{CityInfo.aqi.city.qlty}}</span></p>
-    			</div>
-    		</div>
+                 <router-link to="/login" slot="left">
+                     <mt-button @click.native='loginIn'>登录</mt-button>
+                 </router-link>
+                 <router-link to="/chooseCity" slot="right">
+                    <mt-button><i class="fa fa-plus"></i></mt-button>
+                 </router-link>
+            </myHeader>
+            <div class="date">
+                <h1 class='title'>浮&nbsp;&nbsp;生</h1>
+                <p class='orderDay'>第&nbsp;<span class='number'>0</span>&nbsp;日</p>
+                <p class='detailDay' v-if="CityInfo.status === 'ok'"><i class="fa fa-calendar"></i>&nbsp;<span>{{CityInfo.daily_forecast["0"].date}}</span>&nbsp;<span>{{lunarDate.week}}</span>&nbsp;<span>{{lunarDate.date}}</span></p>
+            </div>
+            <div class='weather-content' v-if="CityInfo.status === 'ok'">
+                <i class="icon-weather" :style='styleObject'></i>
+            </div>
+            <p class='weater-des' v-if="CityInfo.status === 'ok'">{{CityInfo.now.cond.txt}}</p>
+            <div class="weather-detail">
+                <div class="detail-left">
+                    <p class='du'><span class='centigrade' v-if="CityInfo.status === 'ok'">{{CityInfo.hourly_forecast["0"].tmp}}</span>&nbsp;℃</p>
+                    <p class='maxmin' v-if="CityInfo.status === 'ok'"><i class="fa fa-long-arrow-down"></i>&nbsp;<span class='min'>{{CityInfo.daily_forecast["0"].tmp.min}}</span>℃&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>&nbsp;<span class='max'>{{CityInfo.daily_forecast["0"].tmp.max}}</span>℃</p>
+                </div>
+                <div class="detail-right">
+                    <p class='pm25'>PM2.5：<span class='pmnumber' v-if="CityInfo.status === 'ok'">{{CityInfo.aqi.city.pm25}}</span></p>
+                    <p class='pmdes'>空气质量：<span class='air' v-if="CityInfo.status === 'ok'">{{CityInfo.aqi.city.qlty}}</span></p>
+                </div>
+            </div>
         </div>
+        <future :CityInfo='CityInfo'></future>
     </mt-loadmore>
 </template>
 
 <script>
 import myHeader from '@/components/header';
+import future from '@/components/future';
 export default {
     data() {
         return {
@@ -158,7 +159,8 @@ export default {
         }
     },
     components: {
-        myHeader
+        myHeader,
+        future
     }
 };
 </script>
@@ -167,6 +169,13 @@ export default {
 .loadmore {
     height: 100%;
     width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .3)),url('../assets/img/index_night.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    overflow: auto;
+}
+.loadmore::-webkit-scrollbar {
+    width: 0px;
 }
 .loadmore .mint-loadmore-content {
     height: 100%;
@@ -176,18 +185,6 @@ export default {
 	position: relative;
     height: 100%;
     width: 100%;
-    background: url('../assets/img/index_night.jpg');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-}
-.bg {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	background-color: #000000;
-	opacity: 0.3;
 }
 .header {
 	background-color: transparent;
