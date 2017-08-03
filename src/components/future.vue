@@ -4,8 +4,8 @@
         <div class="daysweather">
             <div class="dayweather" v-if='CityInfo.status === "ok"' v-for='item in CityInfo.daily_forecast'>
                 <div class="date"><span>{{item.date | getWeekDay}}</span></div>
-                <div class="icon"></div>
-                <div class="temp"></div>
+                <div class="icon"><i class="icon-weather" :style="{backgroundImage : 'url(static/weathericon/' + item.cond.code_d + '.png)'}"></i></div>
+                <p class="temp">{{item.tmp.min}}°/{{item.tmp.max}}°</p>
             </div>
         </div>
     </div>
@@ -17,14 +17,6 @@ export default {
         CityInfo: {
             type: Object
         }
-    },
-    data() {
-        return {
-        };
-    },
-    created() {
-    },
-    methods: {
     },
     filters: {
         getWeekDay: function(date) {
@@ -61,6 +53,18 @@ export default {
     flex: 1;
 }
 .daysweather .date {
-    height: 15px;
+    margin-top: 5px;
+    height: 15px; 
+}
+.daysweather .icon-weather {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-size:50px 50px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.daysweather .temp {
+    text-align: center;
 }
 </style>
