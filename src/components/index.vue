@@ -3,7 +3,7 @@
         <div class='index'>
             <myHeader class='header' :title='cityNow' icon='fa-map-marker'>
                  <router-link to="/login" slot="left">
-                     <mt-button @click.native='loginIn'>登录</mt-button>
+                     <mt-button>登录</mt-button>
                  </router-link>
                  <router-link to="/chooseCity" slot="right">
                     <mt-button><i class="fa fa-plus"></i></mt-button>
@@ -36,6 +36,7 @@
 <script>
 import myHeader from '@/components/header';
 import future from '@/components/future';
+import { MessageBox } from 'mint-ui';
 export default {
     data() {
         return {
