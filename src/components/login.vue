@@ -96,6 +96,7 @@ export default {
                     })
                 }).then((response) => {
                     if (response.data.code === 0) {
+                        sessionStorage.setItem('UserInfo', JSON.stringify(response.data.data));
                         _this.$router.push({name: 'index'});
                     } else {
                         MessageBox('提示', response.data.message);
