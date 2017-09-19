@@ -3,7 +3,8 @@
         <div class='index'>
             <myHeader class='header' :title='cityNow' icon='fa-map-marker'>
                  <router-link to="/login" slot="left">
-                     <mt-button @click.native='loginIn'>登录</mt-button>
+                    <mt-button v-if="isLogin">切换</mt-button>
+                    <mt-button v-else>登录</mt-button>
                  </router-link>
                  <router-link to="/chooseCity" slot="right">
                     <mt-button><i class="fa fa-plus"></i></mt-button>
@@ -11,7 +12,7 @@
             </myHeader>
             <div class="date">
                 <h1 class='title'>浮&nbsp;&nbsp;生</h1>
-                <p class='orderDay'>第&nbsp;<span class='number'>0</span>&nbsp;日</p>
+                <p class='orderDay'>第&nbsp;<span class='number'>{{UserInfo.dayNumber}}</span>&nbsp;日</p>
                 <p class='detailDay' v-if="CityInfo.status === 'ok'"><i class="fa fa-calendar"></i>&nbsp;<span>{{CityInfo.daily_forecast["0"].date}}</span>&nbsp;<span>{{lunarDate.week}}</span>&nbsp;<span>{{lunarDate.date}}</span></p>
             </div>
             <div class='weather-content' v-if="CityInfo.status === 'ok'">
@@ -36,13 +37,16 @@
 <script>
 import myHeader from '@/components/header';
 import future from '@/components/future';
+import { MessageBox } from 'mint-ui';
 export default {
     data() {
         return {
             CityInfo: {},
             iconUrl: '',
             styleObject: {},
-            cityNow: '成都'
+            cityNow: '成都',
+            UserInfo: {},
+            isLogin: false
         };
     },
     computed: {
@@ -105,6 +109,20 @@ export default {
         }
     },
     created() {
+        let UserInfo = sessionStorage.getItem('UserInfo');
+        if (UserInfo) {
+            this.isLogin = true;
+            let UserInfoJson = JSON.parse(UserInfo);
+            console.log(UserInfoJson);
+            let UserId = UserInfoJson.id;
+            this.$http({
+                url: 'getUserById/' + UserId,
+                method: 'Get',
+                baseURL: '/self'
+            }).then((response) => {
+                this.UserInfo = response.data.data;
+            });
+        };
         let cityWeather = sessionStorage.getItem('cityWeather');
         if (cityWeather) {
             this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
@@ -119,32 +137,37 @@ export default {
         refresh() {
             let position = '';
             this.$http({
-                url: 'location/ip',
+                url: 'getLocation',
                 method: 'get',
-                baseURL: '/map',
-                params: {
-                    ak: 'nc7Q1agjAoTBM6u804rrBnNAikci0L06',
-                    coor: 'bd09ll'
-                },
+                baseURL: '/self',
                 withCredentials: true
             }).then((response) => {
-                position = response.data.content.address_detail.city;
-                this.$http({
-                    url: 'v5/weather',
-                    method: 'get',
-                    baseURL: '/api',
-                    params: {
-                        city: position,
-                        key: 'd15dc3e2ceec45279bdaf77c50399a89'
-                    },
-                    withCredentials: true
-                }).then((response) => {
-                    sessionStorage.setItem('cityWeather', JSON.stringify(response.data.HeWeather5['0']));
-                    this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
-                    this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
-                    this.styleObject = { 'background-image': this.iconUrl };
-                    this.cityNow = this.CityInfo.basic.city;
-                });
+                let locationData = response.data.data;
+                position = locationData.content.address_detail.city;
+                if (locationData.status === 0) {
+                    this.$http({
+                        url: 'getWeather',
+                        method: 'get',
+                        baseURL: '/self',
+                        params: {
+                            city: position
+                        },
+                        withCredentials: true
+                    }).then((response) => {
+                        let weatherData = response.data.data;
+                        if (weatherData.HeWeather5['0'].status === 'ok') {
+                            sessionStorage.setItem('cityWeather', JSON.stringify(weatherData.HeWeather5['0']));
+                            this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
+                            this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
+                            this.styleObject = { 'background-image': this.iconUrl };
+                            this.cityNow = this.CityInfo.basic.city;
+                        } else {
+                            MessageBox('提示', '获取天气信息失败');
+                        }
+                    });
+                } else {
+                    MessageBox('提示', '定位失败,请手动选择城市');
+                }
             });
         },
         loadTop() {

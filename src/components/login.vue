@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui';
 export default {
     data() {
         return {
@@ -82,7 +83,44 @@ export default {
             }
         },
         submit() {
-            console.log('提交成功!');
+            let _this = this;
+            let qs = require('qs');
+            if (this.isLogin) {
+                this.$http({
+                    url: 'login',
+                    method: 'post',
+                    baseURL: '/self',
+                    data: qs.stringify({
+                        name: _this.info.username,
+                        password: _this.info.password
+                    })
+                }).then((response) => {
+                    if (response.data.code === 0) {
+                        sessionStorage.setItem('UserInfo', JSON.stringify(response.data.data));
+                        _this.$router.push({name: 'index'});
+                    } else {
+                        MessageBox('提示', response.data.message);
+                    }
+                });
+            } else {
+                this.$http({
+                    url: 'sign',
+                    method: 'post',
+                    baseURL: '/self',
+                    data: qs.stringify({
+                        name: _this.info.username,
+                        password: _this.info.password,
+                        birthDay: _this.info.birthday
+                    })
+                }).then((response) => {
+                    if (response.data.code === 0) {
+                        MessageBox('提示', '注册成功,请输入账号密码登录');
+                        _this.changeState();
+                    } else {
+                       MessageBox('提示', response.data.message);
+                    }
+                });
+            }
         }
     }
 };
