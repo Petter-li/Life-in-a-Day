@@ -143,32 +143,37 @@ export default {
         refresh() {
             let position = '';
             this.$http({
-                url: 'location/ip',
+                url: 'getLocation',
                 method: 'get',
-                baseURL: '/map',
-                params: {
-                    ak: 'nc7Q1agjAoTBM6u804rrBnNAikci0L06',
-                    coor: 'bd09ll'
-                },
+                baseURL: '/self',
                 withCredentials: true
             }).then((response) => {
-                position = response.data.content.address_detail.city;
-                this.$http({
-                    url: 'v5/weather',
-                    method: 'get',
-                    baseURL: '/api',
-                    params: {
-                        city: position,
-                        key: 'd15dc3e2ceec45279bdaf77c50399a89'
-                    },
-                    withCredentials: true
-                }).then((response) => {
-                    sessionStorage.setItem('cityWeather', JSON.stringify(response.data.HeWeather5['0']));
-                    this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
-                    this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
-                    this.styleObject = { 'background-image': this.iconUrl };
-                    this.cityNow = this.CityInfo.basic.city;
-                });
+                let locationData = response.data.data;
+                position = locationData.content.address_detail.city;
+                if (locationData.status === 0) {
+                    this.$http({
+                        url: 'getWeather',
+                        method: 'get',
+                        baseURL: '/self',
+                        params: {
+                            city: position
+                        },
+                        withCredentials: true
+                    }).then((response) => {
+                        let weatherData = response.data.data;
+                        if (weatherData.HeWeather5['0'].status === 'ok') {
+                            sessionStorage.setItem('cityWeather', JSON.stringify(weatherData.HeWeather5['0']));
+                            this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
+                            this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
+                            this.styleObject = { 'background-image': this.iconUrl };
+                            this.cityNow = this.CityInfo.basic.city;
+                        } else {
+                            MessageBox('提示', '获取天气信息失败');
+                        }
+                    });
+                } else {
+                    MessageBox('提示', '定位失败,请手动选择城市');
+                }
             });
         },
         loadTop() {

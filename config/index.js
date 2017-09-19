@@ -29,20 +29,6 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         // proxy all requests starting with /api to http://localhost:3010/api
-       '/api': {
-            target: 'https://free-api.heweather.com/',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/api': '/'
-            }
-        },
-        '/map': {
-            target: 'https://api.map.baidu.com/',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/map': '/'
-            }
-        },
         '/self': {
             target: 'http://127.0.0.1:8642/',
             changeOrigin: true,
