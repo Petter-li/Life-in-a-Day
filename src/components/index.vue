@@ -21,8 +21,8 @@
             <p class='weater-des' v-if="CityInfo.status === 'ok'">{{CityInfo.now.cond.txt}}</p>
             <div class="weather-detail">
                 <div class="detail-left">
-                    <p class='du'><span class='centigrade' v-if="CityInfo.status === 'ok'">{{CityInfo.hourly_forecast["0"].tmp}}</span>&nbsp;℃</p>
-                    <p class='maxmin' v-if="CityInfo.status === 'ok'"><i class="fa fa-long-arrow-down"></i>&nbsp;<span class='min'>{{CityInfo.daily_forecast["0"].tmp.min}}</span>℃&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>&nbsp;<span class='max'>{{CityInfo.daily_forecast["0"].tmp.max}}</span>℃</p>
+                    <p class='du'><span class='centigrade' v-if="CityInfo.hourly_forecast != null">{{CityInfo.hourly_forecast["0"].tmp}}</span>&nbsp;℃</p>
+                    <p class='maxmin' v-if="CityInfo.hourly_forecast != null"><i class="fa fa-long-arrow-down"></i>&nbsp;<span class='min'>{{CityInfo.daily_forecast["0"].tmp.min}}</span>℃&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>&nbsp;<span class='max'>{{CityInfo.daily_forecast["0"].tmp.max}}</span>℃</p>
                 </div>
                 <div class="detail-right">
                     <p class='pm25'>PM2.5：<span class='pmnumber' v-if="CityInfo.status === 'ok'">{{CityInfo.aqi.city.pm25}}</span></p>
@@ -158,6 +158,7 @@ export default {
                         if (weatherData.HeWeather5['0'].status === 'ok') {
                             sessionStorage.setItem('cityWeather', JSON.stringify(weatherData.HeWeather5['0']));
                             this.CityInfo = JSON.parse(sessionStorage.getItem('cityWeather'));
+                            console.log(this.CityInfo.hourly_forecast.length);
                             this.iconUrl = 'url(static/weathericon/' + this.CityInfo.now.cond.code + '.png)';
                             this.styleObject = { 'background-image': this.iconUrl };
                             this.cityNow = this.CityInfo.basic.city;

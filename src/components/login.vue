@@ -7,7 +7,7 @@
                     <mt-button icon="back"></mt-button>
                 </router-link>
             </mt-header>
-            <div class="form">
+            <div class="form loginForm">
                 <mt-field placeholder="用户名" v-model="info.username" class='input username'></mt-field>
                 <mt-field placeholder="密码" v-model="info.password" type="password" class='input'></mt-field>
                 <mt-field v-if='!isLogin' placeholder="出生日期" v-model="info.birthday" class='input' readonly @click.native.stop.prevent='changePicker'></mt-field>
@@ -159,12 +159,16 @@ export default {
     margin: 60px auto 0px auto;
     width:70%;
 }
+.loginForm a.mint-cell {
+    background-color: transparent;
+}
 .input {
     background-color: transparent;
     border-top: none;
 }
 .input .mint-cell-wrapper {
     padding: 0px 0px;
+    background-color: transparent;
 }
 .username .mint-cell-wrapper {
     background-image: none;
