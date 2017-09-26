@@ -40,5 +40,6 @@ export default {
 <style scoped>
 .mint-header {
     font-size: 18px;
+    background-color: transparent;
 }
 </style>

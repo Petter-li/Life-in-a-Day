@@ -117,8 +117,7 @@ export default {
             let UserId = UserInfoJson.id;
             this.$http({
                 url: 'getUserById/' + UserId,
-                method: 'Get',
-                baseURL: '/self'
+                method: 'Get'
             }).then((response) => {
                 this.UserInfo = response.data.data;
             });
@@ -139,7 +138,6 @@ export default {
             this.$http({
                 url: 'getLocation',
                 method: 'get',
-                baseURL: '/self',
                 withCredentials: true
             }).then((response) => {
                 let locationData = response.data.data;
@@ -148,7 +146,6 @@ export default {
                     this.$http({
                         url: 'getWeather',
                         method: 'get',
-                        baseURL: '/self',
                         params: {
                             city: position
                         },
@@ -190,7 +187,7 @@ export default {
     background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .3)),url('../assets/img/index_night.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    overflow: auto;
+    overflow: auto ! important;
 }
 .loadmore::-webkit-scrollbar {
     width: 0px;

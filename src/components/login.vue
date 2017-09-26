@@ -89,7 +89,6 @@ export default {
                 this.$http({
                     url: 'login',
                     method: 'post',
-                    baseURL: '/self',
                     data: qs.stringify({
                         name: _this.info.username,
                         password: _this.info.password
@@ -106,7 +105,6 @@ export default {
                 this.$http({
                     url: 'sign',
                     method: 'post',
-                    baseURL: '/self',
                     data: qs.stringify({
                         name: _this.info.username,
                         password: _this.info.password,
@@ -151,7 +149,10 @@ export default {
     width: 100%;
     height: 100%;
 }
-.title {
+.content .mint-header {
+    background-color: transparent;
+}
+.content .title {
     background-color: transparent;
     font-size: 18px;
 }

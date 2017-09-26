@@ -93,7 +93,6 @@ export default {
             this.$http({
                 url: 'getWeather',
                 method: 'get',
-                baseURL: '/self',
                 params: {
                     city: value
                 },
