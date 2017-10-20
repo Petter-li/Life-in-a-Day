@@ -7,7 +7,7 @@
                     :key="item.value"
                     :title="item.title"
                     :value="item.value"
-                    @click.native='selectCity(item.value)'>
+                    @click.native='selectCity(item.title)'>
                 </mt-cell>
             </mt-search>
         </div>
@@ -29,17 +29,21 @@ export default {
     },
     methods: {
         change (value) {
-            let _this = this;
-            _this.result = [];
-            this.$http({
-                url: 'getCity',
-                method: 'get',
-                params: {
-                    name: value
-                }
-            }).then((response) => {
-                this.result = response.data;
-            });
+            if (value !== '') {
+                let _this = this;
+                _this.result = [];
+                setTimeout(() => {
+                    _this.$http({
+                        url: 'getCity',
+                        method: 'get',
+                        params: {
+                            name: value
+                        }
+                    }).then((response) => {
+                        _this.result = response.data.data;
+                    });
+                }, 2000);
+            }
         },
         selectCity (value) {
             this.$http({
