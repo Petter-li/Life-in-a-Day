@@ -11,7 +11,7 @@ import 'font-awesome/css/font-awesome.css';
 
 Vue.use(Mint);
 Vue.config.productionTip = false;
-axios.defaults.baseURL = 'http://192.168.0.103:8642/';
+axios.defaults.baseURL = 'http://192.168.0.205:8642/';
 Vue.prototype.$http = axios;
 
 // 全局导航钩子
